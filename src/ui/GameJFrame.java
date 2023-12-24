@@ -1,8 +1,15 @@
 package ui;
 
 import javax.swing.*;
+import java.util.Random;
+
 public class GameJFrame extends JFrame {
 
+
+    //创建一个二维数组
+    //目的：用来管理数据
+    //加载图片的时候，会根据二维数组中的数据进行加载
+    int[][]data = new int[4][4];
     public GameJFrame(){
         //初始化界面
         initJFrame();
@@ -10,7 +17,11 @@ public class GameJFrame extends JFrame {
         //初始化菜单
         initJMenuBar();
 
-        //初始化图片
+        //初始化数据（打乱）
+        initData();
+
+
+        //初始化图片（根据打乱的结果去加载图片）
         initImage();
 
 
@@ -18,16 +29,43 @@ public class GameJFrame extends JFrame {
         this.setVisible(true);
     }
 
+    //初始化数据（打乱）
+    private void initData() {
+        //需求：
+        //把一个一维数组中的数据：0-15打乱顺序
+        //再按四个一组的方式添加到二维数组中
 
+
+        //定义一个一维数组
+        int[] tempArr={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+        //打乱数组中数据的顺序
+        //遍历数组，得到每一个元素，拿着每一个元素跟随机索引上的数据进行交换
+        Random r=new Random();
+        for (int i=0; i<tempArr.length; i++){
+            //获取随机索引
+            int index=r.nextInt(tempArr.length);
+            //拿着每一个元素跟随机索引上的数据进行交换
+            int temp=tempArr[i];
+            tempArr[i]=tempArr[index];
+            tempArr[index]=temp;
+        }
+
+        //给二维数组添加数据
+        for (int i = 0; i < tempArr.length; i++) {
+            data[i/4][i%4]=tempArr[i];
+        }
+    }
 
 
     //初始化图片
+    //添加图片的时候按照二维数组中管理的数据添加图片
     private void initImage() {
-        int number=1;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
+                //获取当前要加载图片的序号
+                int num=data[i][j];
                 //创建一个图片ImageIcon对象
-                ImageIcon icon=new ImageIcon("D:\\idea\\IntelliJ IDEA 2023.2.1\\ideaProject\\jigsawgame\\image\\animal\\animal3\\"+number+".jpg");
+                ImageIcon icon=new ImageIcon("D:\\idea\\IntelliJ IDEA 2023.2.1\\ideaProject\\jigsawgame\\image\\animal\\animal3\\"+num+".jpg");
                 //创建一个JLabel对象（管理容器）
                 JLabel jLabel=new JLabel(icon);
                 //指定图片位置
@@ -35,7 +73,6 @@ public class GameJFrame extends JFrame {
                 //把管理容器添加到界面中
                 this.add(jLabel);
                 this.getContentPane().add(jLabel);
-                number++;
             }
         }
 
