@@ -21,6 +21,13 @@ public class GameJFrame extends JFrame implements KeyListener {
     //记录当前展示图片的路径
     String path="image\\animal\\animal3\\";
 
+    //定义二维数组，存储正确的数据
+    int[][]win=new int[][]{
+        {1,2,3,4},
+        {5,6,7,8},
+        {9,10,11,12},
+        {13,14,15,0}
+    };
 
     public GameJFrame(){
         //初始化界面
@@ -80,6 +87,13 @@ public class GameJFrame extends JFrame implements KeyListener {
     private void initImage() {
         //清空已经出现的所有图片
         this.getContentPane().removeAll();
+
+        if(victory()){
+            //显示胜利图片
+            JLabel winJLabel = new JLabel(new ImageIcon("image/win.png"));
+            winJLabel.setBounds(203,283,197,73);
+            this.getContentPane().add(winJLabel);
+        }
 
         //相对路径：相对于当前项目而言
         //  aaa\\bbb 表示在当前项目下，找aaa文件夹，再在其中找bbb
@@ -184,6 +198,12 @@ public class GameJFrame extends JFrame implements KeyListener {
     //按下不松
     @Override
     public void keyPressed(KeyEvent e) {
+        //若游戏胜利，直接结束
+        if(victory()){
+            return;
+        }
+
+
         int code=e.getKeyCode();
         if(code==65){
             //清屏
@@ -206,6 +226,11 @@ public class GameJFrame extends JFrame implements KeyListener {
     //松开
     @Override
     public void keyReleased(KeyEvent e) {
+        //若游戏胜利，直接结束
+        if(victory()){
+            return;
+        }
+
         //对上下左右进行判断
         //左：37 上：38 右：39 下：40
         int code=e.getKeyCode();
@@ -244,6 +269,30 @@ public class GameJFrame extends JFrame implements KeyListener {
             initImage();
         }else if(code==65){
             initImage();
+        }else if(code==87){//作弊码:w
+            data=new int[][]{
+                    {1,2,3,4},
+                    {5,6,7,8},
+                    {9,10,11,12},
+                    {13,14,15,0}
+            };
+            x=3;
+            y=3;
+            initImage();
         }
     }
+
+    //判断胜利
+    public boolean victory(){
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length; j++) {
+                if(data[i][j]!=win[i][j]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
 }
