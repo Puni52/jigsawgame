@@ -18,6 +18,10 @@ public class GameJFrame extends JFrame implements KeyListener {
     int x=0;
     int y=0;
 
+    //记录当前展示图片的路径
+    String path="image\\animal\\animal3\\";
+
+
     public GameJFrame(){
         //初始化界面
         initJFrame();
@@ -89,7 +93,7 @@ public class GameJFrame extends JFrame implements KeyListener {
                 //获取当前要加载图片的序号
                 int num=data[i][j];
                 //创建一个图片ImageIcon对象
-                ImageIcon icon=new ImageIcon("image\\animal\\animal3\\"+num+".jpg");
+                ImageIcon icon=new ImageIcon(path+num+".jpg");
                 //创建一个JLabel对象（管理容器）
                 JLabel jLabel=new JLabel(icon);
                 //指定图片位置
@@ -176,11 +180,30 @@ public class GameJFrame extends JFrame implements KeyListener {
 
     }
 
+
+    //按下不松
     @Override
     public void keyPressed(KeyEvent e) {
+        int code=e.getKeyCode();
+        if(code==65){
+            //清屏
+            this.getContentPane().removeAll();
+            //加载完整图片
+            JLabel all=new JLabel(new ImageIcon(path+"all.jpg"));
+            all.setBounds(83,134,420,420);
+            this.getContentPane().add(all);
+            //加载背景图片
+            ImageIcon bg=new ImageIcon("image\\background.png");
+            JLabel background=new JLabel(bg);
+            background.setBounds(40,40,508,560);
+            this.getContentPane().add(background);
+            //刷新界面
+            this.getContentPane().repaint();
 
+        }
     }
 
+    //松开
     @Override
     public void keyReleased(KeyEvent e) {
         //对上下左右进行判断
@@ -218,6 +241,8 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x+1][y]=0;
             x++;
             //重新加载图片
+            initImage();
+        }else if(code==65){
             initImage();
         }
     }
