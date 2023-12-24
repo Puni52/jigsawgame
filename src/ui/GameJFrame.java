@@ -2,15 +2,22 @@ package ui;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Random;
 
-public class GameJFrame extends JFrame {
+public class GameJFrame extends JFrame implements KeyListener {
 
 
     //创建一个二维数组
     //目的：用来管理数据
     //加载图片的时候，会根据二维数组中的数据进行加载
     int[][]data = new int[4][4];
+
+    //记录空白方块在二维数组中的位置
+    int x=0;
+    int y=0;
+
     public GameJFrame(){
         //初始化界面
         initJFrame();
@@ -53,7 +60,13 @@ public class GameJFrame extends JFrame {
 
         //给二维数组添加数据
         for (int i = 0; i < tempArr.length; i++) {
-            data[i/4][i%4]=tempArr[i];
+
+            if(tempArr[i]==0){
+                x=i/4;
+                y=i%4;
+            }else{
+                data[i/4][i%4]=tempArr[i];
+            }
         }
     }
 
@@ -61,6 +74,9 @@ public class GameJFrame extends JFrame {
     //初始化图片
     //添加图片的时候按照二维数组中管理的数据添加图片
     private void initImage() {
+        //清空已经出现的所有图片
+        this.getContentPane().removeAll();
+
         //相对路径：相对于当前项目而言
         //  aaa\\bbb 表示在当前项目下，找aaa文件夹，再在其中找bbb
 
@@ -93,6 +109,10 @@ public class GameJFrame extends JFrame {
         JLabel background=new JLabel(bg);
         background.setBounds(40,40,508,560);
         this.getContentPane().add(background);
+
+
+        //刷新一下界面
+        this.getContentPane().repaint();
 
     }
 
@@ -147,6 +167,58 @@ public class GameJFrame extends JFrame {
         //取消默认的居中放置，只有取消了才会按照XY轴的形式添加组件
         this.setLayout(null);
 
+        //给整个界面添加键盘监听事件
+        this.addKeyListener(this);
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        //对上下左右进行判断
+        //左：37 上：38 右：39 下：40
+        int code=e.getKeyCode();
+        if(code==37){
+            if(y==0)return;
+            System.out.println("向左");
+            data[x][y]=data[x][y-1];
+            data[x][y-1]=0;
+            y--;
+            //重新加载图片
+            initImage();
+        }else if(code==38){
+            if(x==0)return;
+            System.out.println("向上");
+            //逻辑：把空白图片向上移动
+            data[x][y]=data[x-1][y];
+            data[x-1][y]=0;
+            x--;
+            //重新加载图片
+            initImage();
+        }else if(code==39){
+            if(y==3)return;
+            System.out.println("向右");
+            data[x][y]=data[x][y+1];
+            data[x][y+1]=0;
+            y++;
+            //重新加载图片
+            initImage();
+        }else if(code==40){
+            if(x==3)return;
+            System.out.println("向下");
+            data[x][y]=data[x+1][y];
+            data[x+1][y]=0;
+            x++;
+            //重新加载图片
+            initImage();
+        }
+    }
 }
