@@ -29,6 +29,8 @@ public class GameJFrame extends JFrame implements KeyListener {
         {13,14,15,0}
     };
 
+    //统计步数
+    int step=0;
     public GameJFrame(){
         //初始化界面
         initJFrame();
@@ -94,6 +96,10 @@ public class GameJFrame extends JFrame implements KeyListener {
             winJLabel.setBounds(203,283,197,73);
             this.getContentPane().add(winJLabel);
         }
+
+        JLabel stepCount=new JLabel("步数:"+step);
+        stepCount.setBounds(50,30,100,20);
+        this.getContentPane().add(stepCount);
 
         //相对路径：相对于当前项目而言
         //  aaa\\bbb 表示在当前项目下，找aaa文件夹，再在其中找bbb
@@ -240,6 +246,7 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x][y]=data[x][y-1];
             data[x][y-1]=0;
             y--;
+            step++;
             //重新加载图片
             initImage();
         }else if(code==38){
@@ -249,6 +256,7 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x][y]=data[x-1][y];
             data[x-1][y]=0;
             x--;
+            step++;
             //重新加载图片
             initImage();
         }else if(code==39){
@@ -257,6 +265,7 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x][y]=data[x][y+1];
             data[x][y+1]=0;
             y++;
+            step++;
             //重新加载图片
             initImage();
         }else if(code==40){
@@ -265,6 +274,7 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x][y]=data[x+1][y];
             data[x+1][y]=0;
             x++;
+            step++;
             //重新加载图片
             initImage();
         }else if(code==65){
