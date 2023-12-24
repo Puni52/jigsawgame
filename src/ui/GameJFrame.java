@@ -1,6 +1,7 @@
 package ui;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.util.Random;
 
 public class GameJFrame extends JFrame {
@@ -60,22 +61,38 @@ public class GameJFrame extends JFrame {
     //初始化图片
     //添加图片的时候按照二维数组中管理的数据添加图片
     private void initImage() {
+        //相对路径：相对于当前项目而言
+        //  aaa\\bbb 表示在当前项目下，找aaa文件夹，再在其中找bbb
+
+
+        //细节：先加载的图片在上层，后加载的图片在下层
+        //所以背景图片要在最后添加
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 //获取当前要加载图片的序号
                 int num=data[i][j];
                 //创建一个图片ImageIcon对象
-                ImageIcon icon=new ImageIcon("D:\\idea\\IntelliJ IDEA 2023.2.1\\ideaProject\\jigsawgame\\image\\animal\\animal3\\"+num+".jpg");
+                ImageIcon icon=new ImageIcon("image\\animal\\animal3\\"+num+".jpg");
                 //创建一个JLabel对象（管理容器）
                 JLabel jLabel=new JLabel(icon);
                 //指定图片位置
-                jLabel.setBounds(105*j,105*i,105,105);
+                jLabel.setBounds(105*j+83,105*i+134,105,105);
+                //给图片添加边框
+                //0:让图片凸起
+                //1:让图片凹下去
+                jLabel.setBorder(new BevelBorder(1));
+
                 //把管理容器添加到界面中
                 this.add(jLabel);
                 this.getContentPane().add(jLabel);
             }
         }
-
+        //添加背景图片
+        ImageIcon bg=new ImageIcon("image\\background.png");
+        JLabel background=new JLabel(bg);
+        background.setBounds(40,40,508,560);
+        this.getContentPane().add(background);
 
     }
 
